@@ -1,10 +1,25 @@
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { tiles } from "../data/tiles";
+import { supabase } from "../lib/supabase";
 
 export default function ProductPage() {
   const { id } = useParams();
-  const tile = tiles.find((t) => t.id === Number(id));
+  const [tile, setTile] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    supabase
+      .from("tiles")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle()
+      .then(({ data }) => {
+        setTile(data);
+        setLoading(false);
+      });
+  }, [id]);
+
+  if (loading) return <p>Загрузка...</p>;
   if (!tile) {
     return (
       <>
