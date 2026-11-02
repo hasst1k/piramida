@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { categories } from "../config/categories";
-import BrandTicker from "../components/BrandTicker";
+
 
 export default function Home() {
   return (
@@ -10,7 +10,6 @@ export default function Home() {
         <p>Широкий выбор покрытий для вашего дома. Доставка и консультация.</p>
       </section>
 
-      <BrandTicker />
 
       <section className="categories">
         {categories.map((c) => (
