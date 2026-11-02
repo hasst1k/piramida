@@ -11,8 +11,8 @@ export default function App() {
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/catalog" element={<Catalog />} />
-        <Route path="/catalog/:id" element={<ProductPage />} />
+        <Route path="/catalog/:category" element={<Catalog />} />
+        <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/contacts" element={<Contacts />} />
         <Route path="*" element={<NotFound />} />
       </Route>

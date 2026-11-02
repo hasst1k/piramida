@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { categories } from "../config/categories";
 
 export default function Header() {
   return (
@@ -6,7 +7,9 @@ export default function Header() {
       <NavLink to="/" className="logo">TileShop</NavLink>
       <nav>
         <NavLink to="/">Главная</NavLink>
-        <NavLink to="/catalog">Каталог</NavLink>
+        {categories.map((c) => (
+          <NavLink key={c.slug} to={`/catalog/${c.slug}`}>{c.name}</NavLink>
+        ))}
         <NavLink to="/contacts">Контакты</NavLink>
       </nav>
     </header>
