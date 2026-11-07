@@ -24,10 +24,63 @@ function parseNumber(value) {
 function parseProductName(name) {
   const text = String(name ?? "");
 
-  // Ищем три числа: длина * ширина * толщина.
-  // Например: 25*150*0,9 или 60×120×0.9
+ 
+function parseProductName(name) {
+  const text = String(name ?? "");
+
   const dimensionMatch = text.match(
     /(\d{1,3}(?:[.,]\d+)?)\s*[хx×*]\s*(\d{1,3}(?:[.,]\d+)?)\s*[хx×*]\s*(\d{1,2}(?:[.,]\d+)?)/i
+  );
+
+  let size = "";
+
+  if (dimensionMatch) {
+    const first = dimensionMatch[1].replace(",", ".");
+    const second = dimensionMatch[2].replace(",", ".");
+    const third = dimensionMatch[3].replace(",", ".");
+
+    size = `${first} × ${second} × ${third}`;
+  } else {
+    const simpleMatch = text.match(
+      /(\d{1,3})\s*[хx×*]\s*(\d{1,3})/i
+    );
+
+    if (simpleMatch) {
+      size = `${simpleMatch[1]} × ${simpleMatch[2]}`;
+    }
+  }
+
+  const packagingMatch = text.match(
+    /(\d+(?:[.,]\d+)?)\s*м2\s*\(\s*1\s*к\s*=\s*(\d+)\s*\)/i
+  );
+
+  const areaMatch = text.match(
+    /(\d+(?:[.,]\d+)?)\s*м2/i
+  );
+
+  const surface = /мат\.|матовый|матовая/i.test(text)
+    ? "Матовая"
+    : /полир|глянц/i.test(text)
+      ? "Полированная"
+      : "";
+
+  const rectified = /рект/i.test(text);
+
+  return {
+    size,
+    packageArea: packagingMatch
+      ? Number(packagingMatch[1].replace(",", "."))
+      : areaMatch
+        ? Number(areaMatch[1].replace(",", "."))
+        : null,
+    piecesPerPackage: packagingMatch
+      ? Number(packagingMatch[2])
+      : null,
+    surface,
+    edge: rectified ? "Ректифицированная" : "",
+  };
+}
+
   );
 
   let size = "";
@@ -147,12 +200,7 @@ export default function AdminImport() {
         "код",
         "код товара",
       ]);
-      const stockIndex = findColumn(headers, [
-        "остаток количества",
-        "остаток",
-        "количество",
-        "остаток кол-во",
-      ]);
+
 
       if (brandIndex === -1 || nameIndex === -1) {
         throw new Error(
@@ -195,10 +243,7 @@ export default function AdminImport() {
             priceIndex >= 0
               ? parseNumber(row[priceIndex])
               : null,
-          stock:
-            stockIndex >= 0
-              ? parseNumber(row[stockIndex])
-              : null,
+         
           ...parsed,
           sourceRow: index + 2,
         });
@@ -318,31 +363,26 @@ export default function AdminImport() {
                     <th>Поверхность</th>
                     <th>Ед. изм.</th>
                     <th>Цена</th>
-                    <th>Остаток</th>
                   </tr>
                 </thead>
                 <tbody>
                   {products.map((product) => (
                     <tr key={product.id}>
-                      <td>{product.brand}</td>
-                      <td className="admin-import__product-name">
-                        {product.name}
-                      </td>
-                      <td>{product.size || "Не определён"}</td>
-                      <td>{product.thickness || "—"}</td>
-                      <td>{product.surface || "—"}</td>
-                      <td>{product.unit || "—"}</td>
-                      <td>
-                        {product.price === null
-                          ? "Не указана"
-                          : product.price}
-                      </td>
-                      <td>
-                        {product.stock === null
-                          ? "—"
-                          : product.stock}
-                      </td>
-                    </tr>
+                    <tr key={product.id}>
+                        <td>{product.brand}</td>
+                        <td className="admin-import__product-name">
+                            {product.name}
+                        </td>
+                        <td>{product.size || "Не определён"}</td>
+                        <td>{product.surface || "—"}</td>
+                        <td>{product.unit || "—"}</td>
+                        <td>
+                            {product.price === null
+                            ? "Не указана"
+                            : product.price}
+                        </td>
+                        </tr>
+                        </tr>
                   ))}
                 </tbody>
               </table>
