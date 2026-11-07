@@ -29,7 +29,7 @@ export default function Header() {
         </NavLink>
 
         <NavLink to="/contacts">
-          Контакты
+          О нас
         </NavLink>
 
         <NavLink to="/account">
