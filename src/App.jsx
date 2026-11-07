@@ -7,6 +7,7 @@ import Catalog from "./pages/Catalog";
 import ProductPage from "./pages/ProductPage";
 import Contacts from "./pages/Contacts";
 import NotFound from "./pages/NotFound";
+import AdminImport from "./pages/AdminImport";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/contacts" element={<Contacts />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/admin/import" element={<AdminImport />} />
       </Route>
     </Routes>
   );
