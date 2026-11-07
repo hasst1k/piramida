@@ -81,7 +81,7 @@ function parseProductName(name) {
   };
 }
 
-  );
+  ;
 
   let size = "";
   let thickness = "";
