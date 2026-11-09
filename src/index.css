@@ -389,45 +389,63 @@ h1, h2, h3 {
 .cat-card::before {
   content: '';
   position: absolute;
+  z-index: 0;
   inset: 0;
   background: var(--img) center / cover no-repeat;
-  opacity: .72;
+  opacity: .85;
   transition: transform .6s, opacity .3s;
 }
 
 .cat-card::after {
   content: '';
   position: absolute;
+  z-index: 1;
   inset: 0;
   background: linear-gradient(
     0deg,
-    rgba(20, 20, 18, .82),
-    rgba(20, 20, 18, .08) 85%
+    rgba(20, 20, 18, .65),
+    rgba(20, 20, 18, .05) 85%
   );
 }
 
 .cat-card:hover::before {
   transform: scale(1.06);
-  opacity: .9;
+  opacity: 1;
+}
+
+/* Текст всегда поверх затемнения */
+
+.cat-card > * {
+  position: relative;
+  z-index: 2;
+  color: #fff !important;
+  opacity: 1 !important;
 }
 
 .cat-card h3 {
   margin: 0 0 10px;
   font-size: 30px;
+  color: #fff !important;
+  opacity: 1 !important;
 }
 
 .cat-card p {
   margin: 0 0 22px;
-  color: rgba(255,255,255,.76);
+  color: #fff !important;
   font-size: 13px;
+  opacity: 1 !important;
 }
 
 .cat-card span {
+  color: #fff !important;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: .02em;
+  opacity: 1 !important;
 }
+
 /* Изображение товара в каталоге */
+
 .card-image {
   position: relative;
   width: 100%;
@@ -459,6 +477,7 @@ h1, h2, h3 {
   background: rgba(25, 24, 22, .38);
   text-shadow: 0 1px 5px rgba(0, 0, 0, .35);
 }
+
 /* CTA */
 
 .cta {
@@ -863,29 +882,33 @@ h1, h2, h3 {
   .logo {
     font-size: 15px;
   }
-  
-    .home-page {
-      position: relative;
-      isolation: isolate;
-      min-height: 100vh;
-      background-image:
-        linear-gradient(
-          rgba(0, 0, 0, 0.58),
-          rgba(0, 0, 0, 0.68)
-        ),
-        url("/tile-background.png");
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-    }
+}
 
-    /* На мобильных устройствах */
-    @media (max-width: 768px) {
-      .home-page {
-        background-attachment: scroll;
-      }
-    }
+/* ФОН ГЛАВНОЙ СТРАНИЦЫ */
+
+.home-page {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  background-image:
+    linear-gradient(
+      rgba(0, 0, 0, 0.58),
+      rgba(0, 0, 0, 0.68)
+    ),
+    url("/tile-background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* На мобильных устройствах */
+
+@media (max-width: 768px) {
+  .home-page {
+    background-attachment: scroll;
+  }
+}
 
 html {
   min-height: 100%;
@@ -952,6 +975,4 @@ main {
   letter-spacing: .02em;
   background: rgba(25, 24, 22, .38);
   text-shadow: 0 1px 5px rgba(0, 0, 0, .35);
-}
-
 }
